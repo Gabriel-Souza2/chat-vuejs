@@ -1,5 +1,7 @@
 # chat-vuejs
 
+Front-end de um chat construido com vuejs (vuetify) e laravel
+
 ## Project setup
 ```
 npm install
@@ -19,6 +21,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
