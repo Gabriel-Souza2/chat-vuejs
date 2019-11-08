@@ -24,9 +24,9 @@ const routes = [
     component: () => import("../views/auth/Register.vue")
   },
   {
-    path: "/forget/password",
-    name: "forgetPassword",
-    component: () => import("../views/auth/ForgetPassword.vue")
+    path: "/forgot/password",
+    name: "forgotPassword",
+    component: () => import("../views/auth/ForgotPassword.vue")
   },
 
   // End Auth Routes

@@ -1,65 +1,28 @@
 <template>
-  <v-container fluid class="fill-height">
-    <v-row>
-      <v-col cols="12">
-        <v-row justify="center" align="center">
-          <v-col md="4" sm="8">
-            <v-card class="elevation-4">
-              <v-card-title class="justify-center">
-                <h2>Sign In</h2>
-              </v-card-title>
-              <v-card-actions class="justify-center">
-                <v-btn
-                  v-for="(button, key) in buttons"
-                  :key="key"
-                  outlined
-                  large
-                  :color="button.color"
-                >
-                  <v-icon left>{{ button.icon }}</v-icon>
-                </v-btn>
-              </v-card-actions>
-              <div class="form pa-5">
-                <v-form>
-                  <v-text-field
-                    label="email"
-                    filled
-                    name="email"
-                    prepend-inner-icon="fa-user"
-                    type="text"
-                    height="50"
-                    :rules="[rules.required, rules.email]"
-                  />
-                  <div class="forget-link">
-                    <a href="/forget/password" class="link">Forget password?</a>
-                  </div>
-                  <v-text-field
-                    label="password"
-                    filled
-                    name="password"
-                    prepend-inner-icon="fa-lock"
-                    type="password"
-                    height="50"
-                    :rules="[rules.required]"
-                  />
-                  <v-btn block dark>Login</v-btn>
-                </v-form>
-                <v-card-actions class="pl-0 mt-2">
-                  <a href="/register" class="link">Don't have an account? Register Now!</a>
-                </v-card-actions>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+  <baseForm
+    title="Sign in"
+    button_name="Login"
+    href="/register"
+    link_message="Don't have an account? Register Now!"
+    @send="login"
+  >
+    <v-card-actions class="justify-center mb-5">
+      <v-btn v-for="(button, key) in buttons" :key="key" outlined large :color="button.color">
+        <v-icon left>{{ button.icon }}</v-icon>
+      </v-btn>
+    </v-card-actions>
+    <LoginForm v-model="data" />
+  </baseForm>
 </template>
 
 <script>
+import baseForm from "@/base/baseForm.vue"; // Importa a base do formulario
+import LoginForm from "@/components/forms/LoginForm.vue"; // Importa o formulario
+
 export default {
   data() {
     return {
+      data: {},
       buttons: [
         {
           icon: "fab fa-facebook-f",
@@ -73,25 +36,25 @@ export default {
           icon: "fab fa-google",
           color: "red"
         }
-      ],
-      rules: {
-        required: value => !!value || "Field is required.",
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || "Invalid e-mail.";
-        }
-      }
+      ]
     };
+  },
+  methods: {
+    login() {}
+  },
+  components: {
+    baseForm,
+    LoginForm
   }
 };
 </script>
 
 <style>
+.v-text-field__details {
+  margin-bottom: 0 !important;
+}
 .forget-link {
   text-align: right;
-}
-.link {
-  color: #616161 !important;
-  font-size: 14px;
+  order: 2 !important;
 }
 </style>
