@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="profileForm" lazy-validation v-model="valid">
     <v-text-field
       v-for="(field, key) in form"
       :key="key"
@@ -12,6 +12,7 @@
       :type="field.type"
       height="50"
       :rules="field.rules"
+      :error-messages="messages[field.name]"
     />
     <v-select
       v-model="data.gender"
@@ -21,19 +22,6 @@
       :items="genders"
       label="Genders"
     ></v-select>
-    <v-file-input
-      label="photo"
-      filled
-      accept="image/*"
-      v-model="data.files"
-      name="files"
-      height="50"
-      ref="photo"
-      prepend-icon
-      prepend-inner-icon="fa-camera-retro"
-      counter
-      :show-size="1000"
-    ></v-file-input>
   </v-form>
 </template>
 
@@ -45,8 +33,16 @@ export default {
   mixins: [hooks],
   data() {
     return {
+      valid: true,
       data: {
-        gender: "M"
+        gender: "male"
+      },
+      messages: {
+        email: [],
+        password: [],
+        first_name: [],
+        last_name: [],
+        birthday: []
       },
       form: [
         {
@@ -88,14 +84,24 @@ export default {
       genders: [
         {
           text: "Male",
-          value: "M"
+          value: "male"
         },
         {
           text: "Female",
-          value: "F"
+          value: "female"
         }
       ]
     };
+  },
+  methods: {
+    validate() {
+      return this.$refs.profileForm.validate();
+    },
+    setErrors(errors) {
+      for (let field in errors) {
+        this.messages[field] = errors[field];
+      }
+    }
   }
 };
 </script>

@@ -5,7 +5,9 @@
     :link="false"
     @send="sendEmail"
   >
-    <div class="mb-2">Enter your email address and we will send you a link to reset your password.</div>
+    <div class="mb-2">
+      Enter your email address and we will send you a link to reset your password.
+    </div>
     <ForgotForm v-model="data" />
   </baseForm>
 </template>

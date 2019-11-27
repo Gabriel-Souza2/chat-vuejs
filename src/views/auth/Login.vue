@@ -5,13 +5,14 @@
     href="/register"
     link_message="Don't have an account? Register Now!"
     @send="login"
+    :loading="loading"
   >
     <v-card-actions class="justify-center mb-5">
       <v-btn v-for="(button, key) in buttons" :key="key" outlined large :color="button.color">
         <v-icon left>{{ button.icon }}</v-icon>
       </v-btn>
     </v-card-actions>
-    <LoginForm v-model="data" />
+    <LoginForm ref="login" v-model="data" />
   </baseForm>
 </template>
 
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       data: {},
+      loading: false,
       buttons: [
         {
           icon: "fab fa-facebook-f",
@@ -40,7 +42,20 @@ export default {
     };
   },
   methods: {
-    login() {}
+    async login() {
+      if (this.$refs.login.validate()) {
+        this.loading = true;
+        await this.$store
+          .dispatch("auth/login", this.data)
+          .then(() => {
+            this.$router.push({ name: "home" });
+          })
+          .catch(({ errors }) => {
+            this.$refs.login.setErrors(errors);
+          });
+      }
+      this.loading = false;
+    }
   },
   components: {
     baseForm,

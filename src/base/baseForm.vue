@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid class="full-height">
     <v-row>
       <v-col cols="12">
         <v-row justify="center" align="center">
@@ -9,7 +9,7 @@
                 <h2>{{ title }}</h2>
               </v-card-title>
               <slot></slot>
-              <v-btn block dark class="mt-2" @click="send">{{ button_name }}</v-btn>
+              <v-btn :loading="loading" block dark class="mt-2" @click="send">{{ button_name }}</v-btn>
               <v-card-actions v-if="link" class="pl-0 mt-2">
                 <a :href="href" class="link">{{ link_message }}</a>
               </v-card-actions>
@@ -37,6 +37,10 @@ export default {
     link_message: {
       type: String,
       default: ""
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -47,3 +51,12 @@ export default {
   }
 };
 </script>
+<style scoped>
+.full-height {
+  height: 100%;
+  align-items: center;
+  box-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>

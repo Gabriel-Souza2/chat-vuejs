@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="loginForm">
     <v-text-field
       label="email"
       v-model="data.email"
@@ -9,6 +9,7 @@
       type="text"
       height="50"
       :rules="[required, email]"
+      :error-messages="messages.email"
     />
     <div class="forget-link">
       <a href="/forgot/password" class="link">Forgot password?</a>
@@ -22,13 +23,14 @@
       type="password"
       height="50"
       :rules="[required]"
+      :error-messages="messages.password"
     />
   </v-form>
 </template>
 
 <script>
 import { required, email } from "@/mixins/forms/rules";
-import hooks from "@/mixins/forms/hooks"
+import hooks from "@/mixins/forms/hooks";
 
 export default {
   mixins: [hooks],
@@ -36,8 +38,22 @@ export default {
     return {
       required,
       email,
-      data: {}
+      data: {},
+      messages: {
+        email: [],
+        password: []
+      }
     };
+  },
+  methods: {
+    validate() {
+      return this.$refs.loginForm.validate();
+    },
+    setErrors(errors) {
+      for (let field in errors) {
+        this.messages[field] = errors[field];
+      }
+    }
   }
 };
 </script>

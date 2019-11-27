@@ -15,6 +15,10 @@ router.beforeEach((to, from, next) => {
   if (to.meta.auth && !store.state.auth.isLogged) {
     router.push({ name: "login" });
   }
+
+  if ((to.name == "register" || to.name == "login") && store.state.auth.isLogged) {
+    router.push({ name: "home" });
+  }
   next();
 });
 
