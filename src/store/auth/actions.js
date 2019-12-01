@@ -20,8 +20,13 @@ const login = async (context, data) => {
       return { success: "login successful" };
     })
     .catch(({ response }) => {
-      return Promise.reject(response.data);
+      return Promise.reject(response);
     });
 };
 
-export default { register, login };
+const loginSocial = async (context, type) => {
+  return await api.get(`/auth/social/login/${type}`).then(({ data }) => {
+    window.location.href = data.url;
+  });
+};
+export default { register, login, loginSocial };

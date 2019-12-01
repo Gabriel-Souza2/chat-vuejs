@@ -8,10 +8,24 @@
     :loading="loading"
   >
     <v-card-actions class="justify-center mb-5">
-      <v-btn v-for="(button, key) in buttons" :key="key" outlined large :color="button.color">
+      <v-btn
+        v-for="(button, key) in buttons"
+        :key="key"
+        outlined
+        large
+        :color="button.color"
+        @click="loginSocial(button.type)"
+      >
         <v-icon left>{{ button.icon }}</v-icon>
       </v-btn>
     </v-card-actions>
+    <v-alert
+      v-model="alert"
+      dismissible
+      close-text="close"
+      type="error"
+      transition="slide-x-transition"
+    >The email or password is incorrect.</v-alert>
     <LoginForm ref="login" v-model="data" />
   </baseForm>
 </template>
@@ -24,19 +38,23 @@ export default {
   data() {
     return {
       data: {},
+      alert: false,
       loading: false,
       buttons: [
         {
           icon: "fab fa-facebook-f",
-          color: "primary"
+          color: "primary",
+          type: "facebook"
         },
         {
           icon: "fab fa-github",
-          color: "black"
+          color: "black",
+          type: "github"
         },
         {
           icon: "fab fa-google",
-          color: "red"
+          color: "red",
+          type: "google"
         }
       ]
     };
@@ -50,11 +68,18 @@ export default {
           .then(() => {
             this.$router.push({ name: "home" });
           })
-          .catch(({ errors }) => {
-            this.$refs.login.setErrors(errors);
+          .catch(({ status, data }) => {
+            if (status == 401) {
+              this.alert = true;
+            } else {
+              this.$refs.login.setErrors(data.errors);
+            }
           });
       }
       this.loading = false;
+    },
+    loginSocial(type) {
+      this.$store.dispatch("auth/loginSocial", type);
     }
   },
   components: {

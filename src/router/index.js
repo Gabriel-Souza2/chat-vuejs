@@ -19,6 +19,11 @@ router.beforeEach((to, from, next) => {
   if ((to.name == "register" || to.name == "login") && store.state.auth.isLogged) {
     router.push({ name: "home" });
   }
+
+  if (to.name == "socialLogin") {
+    store.commit("auth/setToken", to.params);
+    router.push({ name: "home" });
+  }
   next();
 });
 

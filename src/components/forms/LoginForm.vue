@@ -10,6 +10,7 @@
       height="50"
       :rules="[required, email]"
       :error-messages="messages.email"
+      @change="clearErrors"
     />
     <div class="forget-link">
       <a href="/forgot/password" class="link">Forgot password?</a>
@@ -53,6 +54,10 @@ export default {
       for (let field in errors) {
         this.messages[field] = errors[field];
       }
+    },
+    clearErrors() {
+      if (this.messages.email == "The selected email is invalid.")
+        this.messages.email = "";
     }
   }
 };

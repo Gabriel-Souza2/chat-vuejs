@@ -29,6 +29,11 @@ const routes = [
     component: () => import("../views/auth/ForgotPassword.vue")
   },
 
+  {
+    path: "/auth/social/login/:token",
+    name: "socialLogin"
+  },
+
   // End Auth Routes
   {
     path: "*",
