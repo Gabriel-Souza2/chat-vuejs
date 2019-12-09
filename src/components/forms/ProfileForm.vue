@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="profileForm" lazy-validation v-model="valid">
+  <v-form ref="profileForm">
     <v-text-field
       v-for="(field, key) in form"
       :key="key"
@@ -33,7 +33,6 @@ export default {
   mixins: [hooks],
   data() {
     return {
-      valid: true,
       data: {
         gender: "male"
       },

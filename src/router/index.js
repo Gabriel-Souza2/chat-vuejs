@@ -24,6 +24,8 @@ router.beforeEach((to, from, next) => {
     store.commit("auth/setToken", to.params);
     router.push({ name: "home" });
   }
+
+  if (to.path == "/") router.push({ name: "login" });
   next();
 });
 
