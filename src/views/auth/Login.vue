@@ -23,9 +23,9 @@
       v-model="alert"
       dismissible
       close-text="close"
-      type="error"
+      :type="alertType"
       transition="slide-x-transition"
-    >The email or password is incorrect.</v-alert>
+    >{{message}}</v-alert>
     <LoginForm ref="login" v-model="data" />
   </baseForm>
 </template>
@@ -33,12 +33,15 @@
 <script>
 import baseForm from "@/base/baseForm.vue"; // Importa a base do formulario
 import LoginForm from "@/components/forms/LoginForm.vue"; // Importa o formulario
+import session from "@/services/sessionstorage";
 
 export default {
   data() {
     return {
       data: {},
       alert: false,
+      alertType: "",
+      message: "",
       loading: false,
       buttons: [
         {
@@ -59,6 +62,14 @@ export default {
       ]
     };
   },
+  mounted() {
+    let message = "";
+    if ((message = session.getAndRemove("auth_message"))) {
+      this.alert = true;
+      this.alertType = "success";
+      this.message = message;
+    }
+  },
   methods: {
     async login() {
       if (this.$refs.login.validate()) {
@@ -71,6 +82,8 @@ export default {
           .catch(({ status, data }) => {
             if (status == 401) {
               this.alert = true;
+              this.alertType = "error";
+              this.message = "The email or password is incorrect.";
             } else {
               this.$refs.login.setErrors(data.errors);
             }

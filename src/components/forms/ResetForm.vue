@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="profileForm">
+  <v-form ref="ResetForm">
     <v-text-field
       v-for="(field, key) in form"
       :key="key"
@@ -13,15 +13,8 @@
       height="50"
       :rules="field.rules"
       :error-messages="messages[field.name]"
+      @input="passwordValidation"
     />
-    <v-select
-      v-model="data.gender"
-      prepend-inner-icon="fa-venus-mars"
-      filled
-      ref="gender"
-      :items="genders"
-      label="Genders"
-    ></v-select>
   </v-form>
 </template>
 
@@ -33,15 +26,11 @@ export default {
   mixins: [hooks],
   data() {
     return {
-      data: {
-        gender: "male"
-      },
+      data: {},
       messages: {
         email: [],
         password: [],
-        first_name: [],
-        last_name: [],
-        birthday: []
+        password_confirmation: []
       },
       form: [
         {
@@ -59,46 +48,34 @@ export default {
           rules: [required]
         },
         {
-          label: "Name",
-          name: "first_name",
-          icon: "fa-user",
-          type: "text",
+          label: "password confirmation",
+          name: "password_confirmation",
+          icon: "fa-lock",
+          type: "password",
           rules: [required]
-        },
-        {
-          label: "Last Name",
-          name: "last_name",
-          icon: "fa-address-card",
-          type: "text",
-          rules: [required]
-        },
-        {
-          label: "Birthday",
-          name: "birthday",
-          icon: "fa-calendar-day",
-          type: "date",
-          rules: [required]
-        }
-      ],
-      genders: [
-        {
-          text: "Male",
-          value: "male"
-        },
-        {
-          text: "Female",
-          value: "female"
         }
       ]
     };
   },
   methods: {
     validate() {
-      return this.$refs.profileForm.validate();
+      return (
+        this.$refs.ResetForm.validate() &&
+        this.messages.password_confirmation.length == 0
+      );
     },
     setErrors(errors) {
       for (let field in errors) {
         this.messages[field] = errors[field];
+      }
+    },
+    passwordValidation() {
+      if (this.data.password != this.data.password_confirmation) {
+        this.messages.password_confirmation.push(
+          "Your password and confirmation password do not match"
+        );
+      } else {
+        this.messages.password_confirmation = [];
       }
     }
   }

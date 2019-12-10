@@ -1,4 +1,4 @@
-import persistent from "@/services/persistent-store";
+import persistent from "@/services/localstorage";
 
 const setToken = (state, { token }) => {
   state.isLogged = true;
